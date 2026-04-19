@@ -128,3 +128,7 @@ Write-Host " 重新开启。"
 $OutputEncoding = [System.Text.UTF8Encoding]::new()
 [Console]::InputEncoding = [System.Text.UTF8Encoding]::new()
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+
+# 配置zoxide
+
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
