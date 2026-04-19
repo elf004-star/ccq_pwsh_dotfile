@@ -27,7 +27,7 @@ if ($ohMyPoshCommand) {
     }
 }
 else {
-    Write-Warning '未检测到 oh-my-posh，可通过 winget install JanDeDobbeleer.OhMyPosh 进行安装。'
+    Write-Warning '未检测到 oh-my-posh，可通过 winget install JanDeDobbeleer.OhMyPosh -s winget 进行安装。'
 }
 
 # 启动 lemonade server（若未运行）
