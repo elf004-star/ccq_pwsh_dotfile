@@ -129,6 +129,55 @@ $OutputEncoding = [System.Text.UTF8Encoding]::new()
 [Console]::InputEncoding = [System.Text.UTF8Encoding]::new()
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 
-# 配置zoxide
-
+# 配置 zoxide
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+# 配置 fzf
+
+## Ctrl+R: 搜索命令历史
+function Invoke-FzfHistory {
+    $command = (Get-Content (Get-PSReadlineOption).HistorySavePath | fzf)
+    if ($command) {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($command)
+    }
+}
+
+## Ctrl+T: 搜索文件并插入路径
+function Invoke-FzfFile {
+    $file = fzf
+    if ($file) {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert($file)
+    }
+}
+
+Set-PSReadLineKeyHandler -Key Ctrl+r -ScriptBlock { Invoke-FzfHistory }
+Set-PSReadLineKeyHandler -Key Ctrl+t -ScriptBlock { Invoke-FzfFile }
+
+## ** + Tab: 模糊补全（手动实现）
+function Invoke-FzfTabCompletion {
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    
+    # 检查光标前是否有 **
+    if ($line.Substring(0, $cursor) -match '\*\*$') {
+        # 获取 ** 前的命令部分
+        $prefix = $line.Substring(0, $cursor - 2)
+        
+        # 打开 fzf 选择文件
+        $selected = fzf
+        if ($selected) {
+            # 替换 ** 为选中的路径
+            $newLine = $prefix + $selected + $line.Substring($cursor)
+            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, $newLine)
+            # 将光标移到替换后的末尾
+            [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($prefix.Length + $selected.Length)
+        }
+    } else {
+        # 没有 **，使用默认补全
+        [Microsoft.PowerShell.PSConsoleReadLine]::TabCompleteNext()
+    }
+}
+
+# 绑定 Tab 键
+Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
