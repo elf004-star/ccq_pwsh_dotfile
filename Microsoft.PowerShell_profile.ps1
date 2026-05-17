@@ -64,34 +64,34 @@ function ya {
 
 # 修复lua乱码问题
 
-function lu {
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$Script,
-        [string[]]$Args
-    )
-    
-    # 保存原始编码
-    $oldOutput = [Console]::OutputEncoding
-    $oldError = [Console]::InputEncoding
-    
-    # 设置为UTF-8
-    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-    [Console]::InputEncoding = [System.Text.Encoding]::UTF8
-    
-    try {
-        # 运行Lua并转换输出
-        if ($Args.Count -gt 0) {
-            lua $Script @Args
-        } else {
-            lua $Script
-        }
-    } finally {
-        # 恢复原始编码
-        [Console]::OutputEncoding = $oldOutput
-        [Console]::InputEncoding = $oldError
-    }
-}
+# function lu {
+#     param(
+#         [Parameter(Mandatory=$true)]
+#         [string]$Script,
+#         [string[]]$Args
+#     )
+#
+#     # 保存原始编码
+#     $oldOutput = [Console]::OutputEncoding
+#     $oldError = [Console]::InputEncoding
+#
+#     # 设置为UTF-8
+#     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+#     [Console]::InputEncoding = [System.Text.Encoding]::UTF8
+#
+#     try {
+#         # 运行Lua并转换输出
+#         if ($Args.Count -gt 0) {
+#             lua $Script @Args
+#         } else {
+#             lua $Script
+#         }
+#     } finally {
+#         # 恢复原始编码
+#         [Console]::OutputEncoding = $oldOutput
+#         [Console]::InputEncoding = $oldError
+#     }
+# }
 
 # 1. 定义代理地址变量
 $proxyAddr = "http://127.0.0.1:8118"
@@ -125,9 +125,9 @@ Write-Host "Set-Proxy" -ForegroundColor Cyan -NoNewline
 Write-Host " 重新开启。"
 
 # 设置UTF-8编码
-$OutputEncoding = [System.Text.UTF8Encoding]::new()
-[Console]::InputEncoding = [System.Text.UTF8Encoding]::new()
-[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+# $OutputEncoding = [System.Text.UTF8Encoding]::new()
+# [Console]::InputEncoding = [System.Text.UTF8Encoding]::new()
+# [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 
 # 配置 zoxide
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
