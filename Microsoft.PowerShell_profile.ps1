@@ -95,6 +95,7 @@ function ya {
 
 # 1. 定义代理地址变量
 $proxyAddr = "http://127.0.0.1:8118"
+$noProxyAddr = "localhost,127.0.0.1,api.deepseek.com"
 
 # 2. 定义开启代理的函数
 function Set-Proxy {
@@ -102,7 +103,13 @@ function Set-Proxy {
     $env:HTTPS_PROXY = $proxyAddr
     $env:http_proxy  = $proxyAddr
     $env:https_proxy = $proxyAddr
+
+    # 设置 NO_PROXY
+    $env:NO_PROXY    = $noProxyAddr
+    $env:no_proxy    = $noProxyAddr
+
     Write-Host "--- 🚀 代理已开启: $proxyAddr ---" -ForegroundColor Cyan
+    Write-Host "--- 🌐 绕过代理列表: $noProxyAddr ---" -ForegroundColor DarkGray
 }
 
 # 3. 定义取消代理的函数
@@ -111,6 +118,11 @@ function Unset-Proxy {
     $env:HTTPS_PROXY = $null
     $env:http_proxy  = $null
     $env:https_proxy = $null
+
+    # 清除 NO_PROXY
+    $env:NO_PROXY    = $null
+    $env:no_proxy    = $null
+
     Write-Host "--- 🛑 代理已关闭 ---" -ForegroundColor Yellow
 }
 
