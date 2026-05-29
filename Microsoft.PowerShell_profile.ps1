@@ -95,7 +95,7 @@ function ya {
 
 # 1. 定义代理地址变量
 $proxyAddr = "http://127.0.0.1:8118"
-$noProxyAddr = "localhost,127.0.0.1,api.deepseek.com"
+$noProxyAddr = "localhost,127.0.0.1,api.deepseek.com,dashscope.aliyuncs.com"
 
 # 2. 定义开启代理的函数
 function Set-Proxy {
