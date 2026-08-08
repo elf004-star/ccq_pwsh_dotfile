@@ -105,15 +105,15 @@ $extraProxyVars = @{ NODE_USE_ENV_PROXY = '1' }
 
 function Set-Proxy {
     foreach ($name in $proxyVarNames) {
-        $env:$name = $proxyAddr
-        $env:$($name.ToLower()) = $proxyAddr
+        Set-Item "env:$name" $proxyAddr
+        Set-Item "env:$($name.ToLower())" $proxyAddr
     }
     foreach ($name in $noProxyVarNames) {
-        $env:$name = $noProxyAddr
-        $env:$($name.ToLower()) = $noProxyAddr
+        Set-Item "env:$name" $noProxyAddr
+        Set-Item "env:$($name.ToLower())" $noProxyAddr
     }
     foreach ($entry in $extraProxyVars.GetEnumerator()) {
-        $env:$($entry.Key) = $entry.Value
+        Set-Item "env:$($entry.Key)" $entry.Value
     }
 
     Write-Host "--- 🚀 代理已开启: $proxyAddr ---" -ForegroundColor Cyan
@@ -123,15 +123,15 @@ function Set-Proxy {
 
 function Unset-Proxy {
     foreach ($name in $proxyVarNames) {
-        $env:$name = $null
-        $env:$($name.ToLower()) = $null
+        Remove-Item "env:$name"
+        Remove-Item "env:$($name.ToLower())"
     }
     foreach ($name in $noProxyVarNames) {
-        $env:$name = $null
-        $env:$($name.ToLower()) = $null
+        Remove-Item "env:$name"
+        Remove-Item "env:$($name.ToLower())"
     }
     foreach ($name in $extraProxyVars.Keys) {
-        $env:$name = $null
+        Remove-Item "env:$name"
     }
 
     Write-Host "--- 🛑 代理已关闭 ---" -ForegroundColor Yellow
