@@ -123,15 +123,15 @@ function Set-Proxy {
 
 function Unset-Proxy {
     foreach ($name in $proxyVarNames) {
-        Remove-Item "env:$name"
-        Remove-Item "env:$($name.ToLower())"
+        Remove-Item "env:$name" -ErrorAction SilentlyContinue
+        Remove-Item "env:$($name.ToLower())" -ErrorAction SilentlyContinue
     }
     foreach ($name in $noProxyVarNames) {
-        Remove-Item "env:$name"
-        Remove-Item "env:$($name.ToLower())"
+        Remove-Item "env:$name" -ErrorAction SilentlyContinue
+        Remove-Item "env:$($name.ToLower())" -ErrorAction SilentlyContinue
     }
     foreach ($name in $extraProxyVars.Keys) {
-        Remove-Item "env:$name"
+        Remove-Item "env:$name" -ErrorAction SilentlyContinue
     }
 
     Write-Host "--- 🛑 代理已关闭 ---" -ForegroundColor Yellow
