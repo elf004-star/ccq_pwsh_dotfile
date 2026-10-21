@@ -45,16 +45,16 @@ Set-Alias -Name vi -Value vim
 function ya {
     # 创建临时文件
     $tempFile = New-TemporaryFile
-    
+
     # 启动 yazi 并传递临时文件路径
     yazi --cwd-file="$($tempFile.FullName)"
-    
+
     # 检查临时文件是否存在且不为空
     if (Test-Path $tempFile.FullName) {
         $newDir = Get-Content $tempFile.FullName -Raw
         # 移除可能的换行符
         $newDir = $newDir.Trim()
-        
+
         if ($newDir -and (Test-Path $newDir) -and ($newDir -ne $PWD.Path)) {
             Set-Location $newDir
         }
@@ -94,7 +94,7 @@ function ya {
 # }
 
 # 1. 代理配置
-$proxyAddr = "http://127.0.0.1:8118"
+$proxyAddr = "http://127.0.0.1:18118"
 $noProxyAddr = "localhost,127.0.0.1,api.deepseek.com,dashscope.aliyuncs.com"
 
 # 需同时设置大小写形式的变量列表
@@ -192,12 +192,12 @@ function Invoke-FzfTabCompletion {
     $line = $null
     $cursor = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
-    
+
     # 检查光标前是否有 **
     if ($line.Substring(0, $cursor) -match '\*\*$') {
         # 获取 ** 前的命令部分
         $prefix = $line.Substring(0, $cursor - 2)
-        
+
         # 打开 fzf 选择文件
         $selected = fzf
         if ($selected) {
