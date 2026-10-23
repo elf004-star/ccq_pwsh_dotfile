@@ -5,7 +5,10 @@ Import-Module posh-git -ErrorAction SilentlyContinue
 Import-Module PSReadLine -ErrorAction SilentlyContinue
 
 # 设置 PSReadLine 选项（增强命令行体验）
-Set-PSReadLineOption -PredictionSource History
+# Windows PowerShell 5.1 自带 PSReadLine 2.0.0，没有 -PredictionSource，需判断后再设置
+if (-not [Console]::IsOutputRedirected -and (Get-Command Set-PSReadLineOption).Parameters.ContainsKey('PredictionSource')) {
+    Set-PSReadLineOption -PredictionSource History
+}
 Set-PSReadLineOption -EditMode Windows
 
 # 初始化 oh-my-posh（新版方式）
